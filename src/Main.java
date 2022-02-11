@@ -8,8 +8,8 @@ import soot.Transform;
 
 public class Main {
 	public static void main (String [] args) {
-		String classPath = "/home/shashin/eclipse-workspace/cs6235/soot-demo/soot-demo/tests";
-		String mainClass = "Main";
+		String classPath = "<directory-containing-your-main-class";
+		String mainClass = "<name-of-your-main-class";
 		
 		String [] sootArgs = {
 				"-v",
