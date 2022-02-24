@@ -1,3 +1,5 @@
+package cs6235;
+
 import java.util.Arrays;
 
 import soot.Body;
@@ -8,8 +10,8 @@ import soot.Transform;
 
 public class Main {
 	public static void main (String [] args) {
-		String classPath = "/home/shashin/eclipse-workspace/cs6235/soot-demo/soot-demo/tests";
-		String mainClass = "Main";
+		String classPath = "<path to the folder that contains your test classes";
+		String mainClass = "<the name of your Main class - usually just 'Main'>";
 		
 		String [] sootArgs = {
 				"-v",
