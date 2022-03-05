@@ -1,7 +1,9 @@
 package cs6235;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import soot.Body;
 import soot.Local;
@@ -24,6 +26,8 @@ import soot.jimple.InvokeStmt;
 import soot.jimple.NewExpr;
 import soot.jimple.ReturnStmt;
 import soot.jimple.Stmt;
+import soot.jimple.toolkits.callgraph.CallGraph;
+import soot.jimple.toolkits.callgraph.Edge;
 import soot.toolkits.graph.Block;
 import soot.toolkits.graph.BlockGraph;
 import soot.toolkits.graph.BriefBlockGraph;
@@ -103,7 +107,107 @@ public class DummyAnalysis extends SceneTransformer {
 		}
 		
 		System.out.println("************************");
+		
+		System.out.println("printing statements of the method in program order (or a naive order)");
+		for(Unit unit : mainMethod.getActiveBody().getUnits()) {
+			System.out.println(unit);
+		}
 
+		System.out.println("************************");
+		
+		//exercise - explore what other forms/kinds of CFGs are available via Soot
+		//obtain the CFG
+		UnitGraph cfg = new BriefUnitGraph(mainMethod.getActiveBody());
+		
+		//obtain the head(s) of the method
+		List<Unit> heads = cfg.getHeads();
+		
+		Unit head = heads.get(0);
+		
+		Stack<Unit> stack = new Stack<Unit>();
+		
+		//'visited' array
+		
+		//add the entry node to the stack
+		stack.add(head);
+		
+		while(!stack.isEmpty()) {
+			Unit unitToProcess = stack.pop();
+			//handle/process/apply-transfer-function
+			System.out.println(unitToProcess);
+			
+			//if required - mark node as visited
+			//if NOT current result same as previous iteration result
+			
+			//obtain the Control-Flow successors of unitToProcess
+			List<Unit> successors = cfg.getSuccsOf(unitToProcess);
+			List<Unit> predecessors = cfg.getPredsOf(unitToProcess);
+			System.out.println("\t" + unitToProcess + " has " + successors.size() + " successors");
+			System.out.println("\t" + unitToProcess + " has " + predecessors.size() + " predecessors");
+			
+			
+			
+			
+			Stmt stmt = (Stmt) unitToProcess;
+			if(stmt instanceof InvokeStmt) {
+				//we want to find the possible targets for the method invocation
+				CallGraph cg = Scene.v().getCallGraph();
+				//where is this method defined? answer is not needed
+				//what are the 'targets' of this invocation?
+				Iterator<Edge> targetEdges = cg.edgesOutOf(unitToProcess);
+				//in the call graph, if you have an edge of the form src->tgt
+				
+				int targetsCount = 0;
+				while(targetEdges.hasNext()) {
+					Edge targetEdge = targetEdges.next();
+					System.out.println(targetEdge.getTgt());
+					targetsCount++;
+					
+				}
+				
+				System.out.println(unitToProcess + " has " + targetsCount + " targets");
+				
+				
+			}
+			
+			
+			
+			
+			
+			
+			
+			//add these successors to the stack
+			stack.addAll(successors);
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		System.out.println("************************");
+		
 		
 	}
 }

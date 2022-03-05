@@ -10,8 +10,8 @@ import soot.Transform;
 
 public class Main {
 	public static void main (String [] args) {
-		String classPath = "<path to the folder that contains your test classes";
-		String mainClass = "<the name of your Main class - usually just 'Main'>";
+		String classPath = "tests";
+		String mainClass = "Main";
 		
 		String [] sootArgs = {
 				"-v",
@@ -19,7 +19,9 @@ public class Main {
 				"-pp",
 				"-w", /*"-app",*/
 				//"-p", "jb", "use-original-names:true",
-				//"-f", "J",
+				"-p", "cg.cha", "enabled:true",
+				"-p", "cg.spark", "enabled:false",
+				"-f", "J",
 				//"-d", "output",
 				mainClass
 				
